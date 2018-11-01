@@ -21,7 +21,7 @@ import com.maxopus.cloud.authorization.mongo.user.domain.User;
 @RequestMapping("/admin/user")
 public class UserController {
 
-	//@Autowired 
+	@Autowired 
 	private MongoUserDetailsManager mongoUserDetailsManager;
 
 	@RequestMapping(value = "/init", method = RequestMethod.GET)

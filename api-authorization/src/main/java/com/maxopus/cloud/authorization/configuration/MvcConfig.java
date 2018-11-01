@@ -1,12 +1,8 @@
 package com.maxopus.cloud.authorization.configuration;
 
-import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-/**
- * Created by bslota on 2017-03-14.
- */
 //@Configuration
 public class MvcConfig extends WebMvcConfigurerAdapter {
 

@@ -1,7 +1,6 @@
 package com.maxopus.cloud.authorization.configuration;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +20,7 @@ import com.maxopus.cloud.authorization.mongo.info.domain.ServerInfo;
 import com.maxopus.cloud.authorization.mongo.user.MongoUserDetailsManager;
 import com.maxopus.cloud.authorization.mongo.user.domain.User;
 
-//@Component
+@Component
 public class InitPostConstruct {
 
 	protected final Logger logger = LoggerFactory.getLogger(getClass());

@@ -12,7 +12,6 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import com.maxopus.cloud.authorization.mongo.oauth.MongoApprovalStore;
 import com.maxopus.cloud.authorization.mongo.oauth.MongoClientDetailsService;
 import com.maxopus.cloud.authorization.mongo.oauth.MongoTokenStore;
-import com.maxopus.cloud.authorization.mongo.user.MongoUserDetailsManager;
 
 @Configuration
 @EnableAuthorizationServer
