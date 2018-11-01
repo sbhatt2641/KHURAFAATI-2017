@@ -1,17 +1,26 @@
 package com.maxopus.cloud.authorization.configuration;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
 import com.maxopus.cloud.authorization.mongo.oauth.MongoApprovalStore;
 import com.maxopus.cloud.authorization.mongo.oauth.MongoClientDetailsService;
-import com.maxopus.cloud.authorization.mongo.oauth.MongoTokenStore;
 
 @Configuration
 @EnableAuthorizationServer
@@ -21,7 +30,13 @@ public class OAuthConfiguration extends AuthorizationServerConfigurerAdapter{
 	private MongoClientDetailsService mongoClientDetailsService;
 	
 	@Autowired 
-	private MongoTokenStore mongoTokenStore;
+	private TokenStore tokenStore;
+	
+	@Autowired
+	private TokenEnhancer tokenEnhancer;
+	
+	@Autowired(required = false) 
+	private JwtAccessTokenConverter accessTokenConverter;
 	
 	@Autowired 
 	private MongoApprovalStore mongoApprovalStore;
@@ -31,7 +46,18 @@ public class OAuthConfiguration extends AuthorizationServerConfigurerAdapter{
 	
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-		endpoints/*.approvalStore(mongoApprovalStore)*/.tokenStore(mongoTokenStore).authenticationManager(authenticationManager);
+		TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+		List<TokenEnhancer> enhancers = new ArrayList<>();
+		enhancers.add(tokenEnhancer);
+        if (accessTokenConverter != null) {
+            enhancers.add(accessTokenConverter);
+        }
+        tokenEnhancerChain.setTokenEnhancers(enhancers);
+		endpoints/*.approvalStore(mongoApprovalStore)
+				.authorizationCodeServices(authorizationCodeServices())*/
+				.tokenServices(tokenServices())
+				.tokenEnhancer(tokenEnhancerChain)
+				.authenticationManager(authenticationManager);
 	}
 
 	@Override
@@ -44,4 +70,18 @@ public class OAuthConfiguration extends AuthorizationServerConfigurerAdapter{
 	public void configure(ClientDetailsServiceConfigurer clients)throws Exception {
 		clients.withClientDetails(mongoClientDetailsService);
 	}
+	
+	@Bean
+    @Primary
+    public DefaultTokenServices tokenServices() {
+        final DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
+        defaultTokenServices.setTokenStore(tokenStore);
+        defaultTokenServices.setSupportRefreshToken(true);
+        return defaultTokenServices;
+    }
+	
+	/*@Bean
+    public AuthorizationCodeServices authorizationCodeServices() {
+        return new MongoAuthorizationCodeServices();
+    }*/
 }

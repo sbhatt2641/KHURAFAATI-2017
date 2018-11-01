@@ -51,7 +51,7 @@ public class AuthSSOSecurityConfig extends WebSecurityConfigurerAdapter {
     
     @Configuration
 	@EnableResourceServer
-	protected static class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
+	protected static class OAuth2ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
 		@Override
 		public void configure(HttpSecurity http) throws Exception {
 			// @formatter:off

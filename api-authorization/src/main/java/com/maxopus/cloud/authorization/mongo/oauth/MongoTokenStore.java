@@ -30,20 +30,23 @@ import com.google.common.base.Predicate;
 @Component
 public class MongoTokenStore implements TokenStore {
 
-	private final MongoOAuth2AccessTokenRepository mongoOAuth2AccessTokenRepository;
-
-	private final MongoOAuth2RefreshTokenRepository mongoOAuth2RefreshTokenRepository;
-
-	private final AuthenticationKeyGenerator authenticationKeyGenerator;
+	@Autowired
+	private MongoOAuth2AccessTokenRepository mongoOAuth2AccessTokenRepository;
 
 	@Autowired
+	private MongoOAuth2RefreshTokenRepository mongoOAuth2RefreshTokenRepository;
+
+	@Autowired
+	private AuthenticationKeyGenerator authenticationKeyGenerator;
+
+	/*@Autowired
 	public MongoTokenStore(final MongoOAuth2AccessTokenRepository mongoOAuth2AccessTokenRepository,
 			final MongoOAuth2RefreshTokenRepository mongoOAuth2RefreshTokenRepository,
 			final AuthenticationKeyGenerator authenticationKeyGenerator) {
 		this.mongoOAuth2AccessTokenRepository = mongoOAuth2AccessTokenRepository;
 		this.mongoOAuth2RefreshTokenRepository = mongoOAuth2RefreshTokenRepository;
 		this.authenticationKeyGenerator = authenticationKeyGenerator;
-	}
+	}*/
 
 	@Override
 	public OAuth2Authentication readAuthentication(final OAuth2AccessToken token) {
