@@ -13,7 +13,7 @@ public class IndexController {
 	
 	@RequestMapping("/login")
 	public String login() {
-		return "loginPage";
+		return "ssoLoginPage";
 	}
 
 	@RequestMapping("/admin/dashboard")
@@ -26,13 +26,13 @@ public class IndexController {
 		return "admin/dashboardLoginPage";
 	}
 	
-	@RequestMapping("/sso/ssoLogin")
-	public String ssoLoginPage() {
-		return "sso/ssoLoginPage";
+	@RequestMapping("/context2/context2Login")
+	public String context2LoginPage() {
+		return "context2/context2LoginPage";
 	}
 	
-	@RequestMapping("/sso/home")
-	public String ssoHome() {
-		return "sso/ssoHomePage";
+	@RequestMapping("/context2/home")
+	public String context2Home() {
+		return "context2/context2HomePage";
 	}
 }
