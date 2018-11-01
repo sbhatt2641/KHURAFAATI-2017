@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: authorization-server
+  data:
+    mongodb:
+      uri: mongodb://localhost/maxopus
+  thymeleaf:
+    cache: false
+
+server:
+  port: 8084 
+
+security:
+  basic:
+    enabled: false
+
+logging:
+  level:
+    org:
+      springframework:
+        security: INFO
