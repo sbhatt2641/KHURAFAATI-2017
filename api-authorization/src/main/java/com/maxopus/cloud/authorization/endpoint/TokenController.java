@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.token.ConsumerTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.maxopus.cloud.authorization.mongo.oauth.MongoTokenStore;
 
 @Controller
+@Profile("!jwttoken")
 public class TokenController {
 
     @Resource(name = "tokenServices")

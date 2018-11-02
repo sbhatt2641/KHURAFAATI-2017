@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.oauth2.provider.approval.Approval;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,12 +22,15 @@ import com.maxopus.cloud.authorization.mongo.oauth.MongoTokenStore;
 
 @Controller
 @RequestMapping("/admin/approval")
+@Profile("!jwttoken")
 public class ApprovalController {
 
 	@Autowired
 	private MongoClientDetailsService clientDetailsService;
+	
 	@Autowired
 	private MongoApprovalStore approvalStore;
+	
 	@Autowired
 	private MongoTokenStore tokenStore;
 

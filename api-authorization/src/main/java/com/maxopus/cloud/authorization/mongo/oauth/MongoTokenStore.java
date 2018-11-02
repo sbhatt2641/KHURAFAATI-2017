@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 import org.springframework.security.oauth2.common.util.SerializationUtils;
@@ -28,6 +29,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 
 @Component
+@Profile("!jwttoken")
 public class MongoTokenStore implements TokenStore {
 
 	@Autowired
