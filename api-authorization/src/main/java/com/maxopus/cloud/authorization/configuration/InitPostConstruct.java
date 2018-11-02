@@ -49,6 +49,11 @@ public class InitPostConstruct {
 
 			User user = new User(null, null, "admin", "admin", authList, true, true, true, true);
 			mongoUserDetailsManager.createUser(user);
+			
+			authList = new ArrayList<GrantedAuthority>();
+			authList.add(new SimpleGrantedAuthority("ROLE_OAUTH_USER"));
+			user = new User(null, null, "user", "user", authList, true, true, true, true);
+			mongoUserDetailsManager.createUser(user);
 
 			serverInfoService.saveServerInfo(null);
 
