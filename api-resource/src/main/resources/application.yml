@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: resource-server
+
+server:
+  port: 8082
+  contextPath: /api
+  ssl:
+    enabled: true
+    keyAlias: ubwebapi
+    keyPassword: Charter817
+    keyStore: C:/certs/ssl-cert.jks 
+    keyStoreProvider: SUN 
+    keyStoreType: JKS    
+        
+security:
+  basic:
+    enabled: false
+  oauth2:
+    resource:
+      jwt:
+        # Tells the JWT framework to fetch the public key from the authorization server during startup
+        # Note: The authorization server needs to be running...
+        #keyValue: "123"
+        keyUri: "https://directsales-ub-local.ncw.webapps.rr.com:8081/oauth/token_key"
+
+logging:
+  level:
+    org:
+      springframework:
+        security: INFO
