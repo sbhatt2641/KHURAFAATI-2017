@@ -1,0 +1,71 @@
+server:
+  port: 7999
+  #context-path: /ui
+  ssl:
+    enabled: true
+#    keyAlias: saindmhpune.webapps.maxopus
+#    keyStorePassword: maxopus@123
+#    keyStore: C:/certs/saindmhpune-webapps-maxopus-com.p12 
+#    keyStoreType: PKCS12
+    keyAlias: ubwebapi
+    keyPassword: Charter817
+    keyStore: C:/certs/ssl-cert.jks 
+    keyStoreProvider: SUN 
+    keyStoreType: JKS
+
+oauth2:
+  grantType: authorization_code
+    
+security:
+  basic:
+    enabled: false
+  oauth2:
+    client:
+      client-id: fooClientId
+      client-secret: fooSecret
+      access-token-uri: https://directsales-ub-local.ncw.webapps.rr.com:8081/oauth/token
+      user-authorization-uri: https://directsales-ub-local.ncw.webapps.rr.com:8081/oauth/authorize
+    resource:
+      user-info-uri: https://directsales-ub-local.ncw.webapps.rr.com:8081/me
+
+maxopus:
+  oauth2:
+    client:
+      clientId: fooClientId
+      clientSecret: fooSecret
+      accessTokenUri: https://directsales-ub-local.ncw.webapps.rr.com:8081/oauth/token
+      userAuthorizationUri: https://directsales-ub-local.ncw.webapps.rr.com:8081/oauth/authorize
+      #clientAuthenticationScheme: form
+      #scope:
+       # - read
+    resource:
+      #jwt:
+        #keyValue: "abc"
+      userInfoUri: https://directsales-ub-local.ncw.webapps.rr.com:8081/me
+  
+netiq:
+  oauth2:
+    client:
+      clientId: c68f4924-63d9-471d-a984-a31a170894f3
+      clientSecret: K94zSPbCQbwnhFnOkktjdEpRPLb3QQHk0u8m6z1eF5WSAcZSgat67-QVkfTGpy6miIhCTPrKZhChQdeJ9_Eo1Q
+      accessTokenUri: https://login.esso-uat.charter.com:8443/nidp/oauth/nam/token
+      userAuthorizationUri: https://login.esso-uat.charter.com:8443/nidp/oauth/nam/authz
+      #tokenName: oauth_token
+      #authenticationScheme: query
+      clientAuthenticationScheme: form
+      scope:
+        - openid
+        - sAMAccountName
+    resource:
+      userInfoUri: https://login.esso-uat.charter.com:8443/nidp/oauth/nam/userinfo
+    
+google:
+  client:
+    clientId: 384072149729-11hfie0hm19te4mis0hghmphlf304u2b.apps.googleusercontent.com
+    clientSecret: ggd5SniXZxSGPy2AKBQZKbV5
+    accessTokenUri: https://www.googleapis.com/oauth2/v4/token
+    userAuthorizationUri: https://accounts.google.com/o/oauth2/v2/auth
+    clientAuthenticationScheme: form
+    scope: openid profile email
+  resource:
+    userInfoUri:  https://www.googleapis.com/oauth2/v3/userinfo
