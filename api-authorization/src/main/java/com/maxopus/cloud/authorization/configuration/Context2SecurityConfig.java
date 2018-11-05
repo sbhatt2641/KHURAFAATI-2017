@@ -12,7 +12,7 @@ public class Context2SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
     protected void configure(HttpSecurity http) throws Exception {
         //@formatter:off
-        http.antMatcher("/context2/**")
+        http.csrf().disable().antMatcher("/context2/**")
             .authorizeRequests()
                 .antMatchers("/", "/js/**", "/css/**").permitAll()
                 .anyRequest().authenticated()

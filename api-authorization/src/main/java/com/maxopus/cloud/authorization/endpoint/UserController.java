@@ -28,7 +28,7 @@ public class UserController {
 	public UserDetails init() {
 
 		List<GrantedAuthority> authList = new ArrayList<GrantedAuthority>(2);
-		authList.add(new SimpleGrantedAuthority("OAUTH_ADMIN"));
+		authList.add(new SimpleGrantedAuthority("ROLE_OAUTH_ADMIN"));
 		
 
 		User user = new User(null, null, "admin", "admin", authList, true, true, true, true);
@@ -72,7 +72,5 @@ public class UserController {
 		public Set<GrantedAuthority> getAuthorities() {
 			return authorities;
 		}
-
-
 	}
 }

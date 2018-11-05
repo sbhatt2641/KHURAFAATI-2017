@@ -28,7 +28,7 @@ public class IndexController {
 	
 	@RequestMapping("/context2/context2Login")
 	public String context2LoginPage() {
-		return "context2/context2LoginPage";
+		return "context2/login";
 	}
 	
 	@RequestMapping("/context2/home")
