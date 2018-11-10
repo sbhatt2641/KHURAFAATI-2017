@@ -51,7 +51,7 @@ public class OAuthConfiguration extends AuthorizationServerConfigurerAdapter{
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 		LOGGER.info("Entering AuthorizationServerEndpointsConfigurer ..." + tokenEnhancer);
-        endpoints/*.approvalStore(mongoApprovalStore)
+		endpoints/*.approvalStore(mongoApprovalStore)
 				.authorizationCodeServices(authorizationCodeServices())*/
 				.tokenServices(tokenServices())
 				/*.tokenStore(tokenStore)
