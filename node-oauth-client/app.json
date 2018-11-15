@@ -1,0 +1,6 @@
+{
+  "PORT": "8888",  
+  "CLIENT_ID": "fooClientId",
+  "CLIENT_SECRET": "fooSecret",
+  "REDIRECT_URI": "http://localhost:8888"
+}
