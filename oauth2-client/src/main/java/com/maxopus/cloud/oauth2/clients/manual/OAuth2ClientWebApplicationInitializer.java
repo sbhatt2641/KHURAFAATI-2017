@@ -1,12 +1,12 @@
 package com.maxopus.cloud.oauth2.clients.manual;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.Filter;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
@@ -18,20 +18,22 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
+import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilter;
 import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
 import org.springframework.security.oauth2.client.token.AccessTokenProvider;
+import org.springframework.security.oauth2.client.token.grant.client.ClientCredentialsResourceDetails;
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
+import org.springframework.security.oauth2.client.token.grant.implicit.ImplicitResourceDetails;
 import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordAccessTokenProvider;
 import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordResourceDetails;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.filter.CompositeFilter;
 
@@ -66,22 +68,7 @@ public class OAuth2ClientWebApplicationInitializer extends WebSecurityConfigurer
 	
 	/*@Autowired
 	private RestTemplate restTemplateNetIqClient;*/
-		
-	/*@RequestMapping("")
-	public String home() {
-		return "redirect:/home.html";
-	}
-	
-	@RequestMapping("/")
-	public String home(Principal user) {
-		return "Hi " + user.getName();
-	}*/
-	
-	@RequestMapping("/user")
-	public Principal user(Principal principal) {
-		return principal;
-	}
-		
+			
 	/*@RequestMapping (value = "/localization", method = RequestMethod.GET)
 	public ResponseEntity<Object> localization(@RequestParam(value = "code", required = false) String authorizationCode,
 			  								   @RequestParam(value = "state", required = false) String clientState,
@@ -110,11 +97,11 @@ public class OAuth2ClientWebApplicationInitializer extends WebSecurityConfigurer
 	protected void configure(HttpSecurity http) throws Exception {
 		// @formatter:off
 			http.antMatcher("/**").authorizeRequests()
-				.antMatchers("/", "/login**", "/webjars/**").permitAll().anyRequest().authenticated()
+				.antMatchers("/", "/index", "/welcome", "/login**", "/webjars/**").permitAll().anyRequest().authenticated()
 				.and().exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/"))
 				.and().logout().logoutSuccessUrl("/").permitAll()
-				.and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-				.and().addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class);
+				.and().csrf().disable()/*csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+				.and()*/.addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class);
 		// @formatter:on		
 	}
 			
@@ -140,9 +127,9 @@ public class OAuth2ClientWebApplicationInitializer extends WebSecurityConfigurer
 				
 		OAuth2ClientAuthenticationProcessingFilter maxopusFilter = new OAuth2ClientAuthenticationProcessingFilter("/maxopus");
 		OAuth2RestTemplate maxopusTemplate = new OAuth2RestTemplate(maxopus(), oauth2ClientContext);
-		if(!"authorization_code".equals(oauth2GrantType)){
+		/*if(!"authorization_code".equals(oauth2GrantType)){
 			maxopusTemplate.setAccessTokenProvider(userAccessTokenProvider());			
-		}
+		}*/
 		maxopusFilter.setRestTemplate(maxopusTemplate);
 		tokenServices = new UserInfoTokenServices(maxopusResource().getUserInfoUri(), maxopus().getClientId());
 		tokenServices.setRestTemplate(maxopusTemplate);
@@ -192,27 +179,33 @@ public class OAuth2ClientWebApplicationInitializer extends WebSecurityConfigurer
 		return registration;
 	}
 	
-	/*@Bean
-    public OAuth2RestOperations myRestTemplate(@Value("${oauth.token}") String tokenUrl) {
+	@Bean
+	@Qualifier("myRestTemplate")
+    public OAuth2RestOperations createMyRestTemplate() {
 
-        OAuth2RestTemplate template = new OAuth2RestTemplate(fullAccessresourceDetails(tokenUrl), new DefaultOAuth2ClientContext(
-                new DefaultAccessTokenRequest()));
-        template.setAccessTokenProvider(userAccessTokenProvider());
+        OAuth2RestTemplate template = new OAuth2RestTemplate(maxopus(), new DefaultOAuth2ClientContext());
+        if(!"authorization_code".equals(oauth2GrantType)){
+        	template.setAccessTokenProvider(userAccessTokenProvider());			
+		}
         return template;
-    }*/
+    }
 	
 	@Bean
 	@ConfigurationProperties("maxopus.oauth2.client")
 	public OAuth2ProtectedResourceDetails maxopus() {
 		
 		OAuth2ProtectedResourceDetails protectedResourceDetails = null;
-		if("authorization_code".equals(oauth2GrantType)){
-			protectedResourceDetails = new AuthorizationCodeResourceDetails();			
-		} else {
+		if("password".equals(oauth2GrantType)){
 			ResourceOwnerPasswordResourceDetails resource = new ResourceOwnerPasswordResourceDetails();
 	        resource.setUsername("user");
 	        resource.setPassword("user");
 	        protectedResourceDetails = resource;
+		} else if("implicit".equals(oauth2GrantType)) {
+			protectedResourceDetails = new ImplicitResourceDetails();
+		} else if("client_credentials".equals(oauth2GrantType)) {
+			protectedResourceDetails = new ClientCredentialsResourceDetails();
+		} else {
+			protectedResourceDetails = new AuthorizationCodeResourceDetails();
 		}
 		return protectedResourceDetails;
 	}

@@ -14,6 +14,7 @@ server:
     keyStoreType: JKS
 
 oauth2:
+  clientType: SERVER_CLIENT
   grantType: authorization_code
     
 security:
@@ -41,7 +42,8 @@ maxopus:
     resource:
       #jwt:
         #keyValue: "abc"
-      userInfoUri: https://directsales-ub-local.ncw.webapps.rr.com:8081/me
+      userInfoUri: https://directsales-ub-local.ncw.webapps.rr.com:8082/api
+      apiUrl: https://directsales-ub-local.ncw.webapps.rr.com:8082/api
   
 netiq:
   oauth2:

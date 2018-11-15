@@ -13,29 +13,18 @@
 <script type="text/javascript"
 	src="/webjars/bootstrap/js/bootstrap.min.js"></script>
 </head>
-<body ng-app="appIndex" ng-controller="indexController as index">
-	<h1>Login</h1>
-	<div class="container" ng-show="!home.authenticated">
-		<div>
-			With NetIq: <a href="/localization">click here</a>
-		</div>
-		<div>
-			With Google: <a href="/google">click here</a>
-		</div>
-		<div>
-			With Maxopus: <a href="/maxopus">click here</a>
-		</div>		
+<body ng-app="appHome" ng-controller="homeController as home">
+	<h1>Home</h1>
+	<div class="container" ng-show="home.authenticated">
+		Logged in as: <span ng-bind="home.user"></span>
 	</div>
-	<div class="container" ng-show="index.authenticated">
-		Logged in as: <span ng-bind="index.user"></span>
-	</div>
-	<div ng-show="index.authenticated">
-		<button ng-click="index.logout()" class="btn btn-primary">Logout</button>
+	<div ng-show="home.authenticated">
+		<button ng-click="home.logout()" class="btn btn-primary">Logout</button>
 	</div>
 </body>
 <script type="text/javascript" src="/webjars/angularjs/angular.min.js"></script>
 <script type="text/javascript">
-	angular.module("appIndex", []).controller("indexController", function($http, $location, $window) {
+	angular.module("appHome", []).controller("homeController", function($http, $location, $window) {
 		var self = this;
 		$http.get("/user").success(function(data) {
 			self.user = data.userAuthentication.details.name;
@@ -43,6 +32,11 @@
 		}).error(function() {
 			self.user = "N/A";
 			self.authenticated = false;
+		});
+		$http.get("/homeAction").success(function(data) {
+			console.log(data);
+		}).error(function() {
+			console.log("/home called failed");
 		});
 		self.logout = function() {
 			$http.post('/logout', {}).success(function() {

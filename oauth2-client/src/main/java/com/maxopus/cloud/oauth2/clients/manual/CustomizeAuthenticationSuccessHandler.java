@@ -15,8 +15,7 @@ public class CustomizeAuthenticationSuccessHandler extends SimpleUrlAuthenticati
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-    	this.setDefaultTargetUrl("/home.html");
+    	this.setDefaultTargetUrl("/home");
         super.onAuthenticationSuccess(request, response, authentication);
     }
-
 }
