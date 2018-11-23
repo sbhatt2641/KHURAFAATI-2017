@@ -32,6 +32,8 @@ import org.springframework.security.oauth2.client.token.grant.implicit.ImplicitR
 import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordAccessTokenProvider;
 import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordResourceDetails;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
+import org.springframework.security.oauth2.provider.token.RemoteTokenServices;
+import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.bind.annotation.RestController;
@@ -131,7 +133,9 @@ public class OAuth2ClientWebApplicationInitializer extends WebSecurityConfigurer
 			maxopusTemplate.setAccessTokenProvider(userAccessTokenProvider());			
 		}*/
 		maxopusFilter.setRestTemplate(maxopusTemplate);
+		RemoteTokenServices remoteTokenServices = tokenService();
 		tokenServices = new UserInfoTokenServices(maxopusResource().getUserInfoUri(), maxopus().getClientId());
+		remoteTokenServices.setRestTemplate(maxopusTemplate);
 		tokenServices.setRestTemplate(maxopusTemplate);
 		maxopusFilter.setTokenServices(tokenServices);
 		maxopusFilter.setAuthenticationSuccessHandler(customizeAuthenticationSuccessHandler);
@@ -143,6 +147,15 @@ public class OAuth2ClientWebApplicationInitializer extends WebSecurityConfigurer
 		filter.setFilters(filters);
 
 		return filter;
+	}
+	
+	@Bean
+	public RemoteTokenServices tokenService() {
+	   RemoteTokenServices tokenServices = new RemoteTokenServices();
+	   tokenServices.setClientId("fooClientId");
+	   tokenServices.setClientSecret("clientSecret");
+	   tokenServices.setCheckTokenEndpointUrl("https://directsales-ub-local.ncw.webapps.rr.com:8081/oauth/check_token");
+	   return tokenServices;
 	}
 	
 	@Bean

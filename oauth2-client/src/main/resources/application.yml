@@ -42,7 +42,7 @@ maxopus:
     resource:
       #jwt:
         #keyValue: "abc"
-      userInfoUri: https://directsales-ub-local.ncw.webapps.rr.com:8082/api
+      userInfoUri: https://directsales-ub-local.ncw.webapps.rr.com:8080/api/users/v1/userInfo
       apiUrl: https://directsales-ub-local.ncw.webapps.rr.com:8082/api
   
 netiq:

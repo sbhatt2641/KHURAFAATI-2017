@@ -14,7 +14,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 	
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-    	if("SERVER_CLIENT".equals(oauth2ClientType)) {
+    	if("SPA_CLIENT".equals(oauth2ClientType)) {
     		registry.addViewController("/").setViewName("redirect:/welcome");
     	} else {
     		registry.addRedirectViewController("/", "index");

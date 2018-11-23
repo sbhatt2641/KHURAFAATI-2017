@@ -72,19 +72,19 @@
 		      }
 		    
 		      function getAgentList() {
-		          var url_base = 'https://directsales-ub-local.ncw.webapps.rr.com:8082/api/';
+		          var url_base = 'https://directsales-ub-local.ncw.webapps.rr.com:8080/api/users/v1/me';
 		          //alert(accessToken);
 		          $.ajax({
 		              url: url_base,
 		              type: 'GET',
-		              dataType: 'text',
+		              dataType: 'json',
 		              headers: {
 	            	  	'Authorization': 'Bearer ' + accessToken
 		              },
 		              success: function (result) {
 		                //Process success actions
-		                var returnResult = result;// JSON.stringify(result);
-		                alert('Success!\r\n' + returnResult);
+		                var returnResult = JSON.stringify(result);
+		                //alert('Success!\r\n' + returnResult);
 		                document.getElementById('callResults').innerHTML = returnResult;
 		                return result;
 		              },
