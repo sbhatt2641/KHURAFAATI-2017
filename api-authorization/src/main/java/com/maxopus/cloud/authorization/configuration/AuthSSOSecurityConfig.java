@@ -35,7 +35,7 @@ public class AuthSSOSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception { 
 		// @formatter:off
         http.requestMatchers()
-            .antMatchers("/login", "/login.do", "/oauth/authorize", "/oauth/token")
+            .antMatchers("/login", "/login.do", "/oauth/authorize"/*, "/oauth/token", "/oauth/check_token"*/)
             .and()
             .csrf().disable()
             .authorizeRequests()

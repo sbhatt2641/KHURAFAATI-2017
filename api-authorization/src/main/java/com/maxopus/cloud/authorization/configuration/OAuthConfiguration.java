@@ -63,7 +63,7 @@ public class OAuthConfiguration extends AuthorizationServerConfigurerAdapter{
 	public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
 		// only for RemoteTokenService !!
 		LOGGER.info("Entering AuthorizationServerSecurityConfigurer ...");
-		security.tokenKeyAccess("isAnonymous() || permitAll()").checkTokenAccess("permitAll()");
+		security.allowFormAuthenticationForClients().tokenKeyAccess("isAnonymous() || permitAll()").checkTokenAccess("isAuthenticated()");
 	}
 
 	@Override
