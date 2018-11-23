@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: eureka-server
+    
+#spring:
+#  profiles: default
+server:
+  port: 8082
+  contextPath: /ecomm
+  ssl:
+    enabled: false
+    keyAlias: ubwebapi
+    keyPassword: Charter817
+    keyStore: C:/certs/ssl-cert.jks 
+    keyStoreProvider: SUN 
+    keyStoreType: JKS
+
+eureka:
+  instance:
+#    preferIpAddress: true #Complains on peer node.
+    hostname: localhost
+  dashboard:
+    path: /apiregistry
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    serviceurl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka
