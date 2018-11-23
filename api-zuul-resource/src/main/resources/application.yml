@@ -1,0 +1,62 @@
+spring:
+  application:
+    name: zuul-resource-server
+
+server:
+  port: 8080
+  contextPath: /api
+  ssl:
+    enabled: true
+    keyAlias: ubwebapi
+    keyPassword: Charter817
+    keyStore: C:/certs/ssl-cert.jks 
+    keyStoreProvider: SUN 
+    keyStoreType: JKS    
+
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 5    
+  client:
+    enabled: true
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8082/ecomm/eureka}
+              
+security:
+  basic:
+    enabled: false
+  oauth2:
+    resource:
+      jwt:
+        # Tells the JWT framework to fetch the public key from the authorization server during startup
+        # Note: The authorization server needs to be running...
+        #keyValue: "123"
+        keyUri: "https://directsales-ub-local.ncw.webapps.rr.com:8081/oauth/token_key"
+
+zuul:
+  PreJWTValidationFilter:
+    pre:
+      disable: false
+    jwt:
+      key: 123
+      prefix: Bearer
+    
+  add-proxy-headers: true
+  ignoredServices: '*'
+  routes:
+    user-service:
+      #exclude Cookie, Set-Cookie, Authorization from sensitive headers
+      sensitiveHeaders: 
+      path: /users/v1/**
+      url: https://directsales-ub-local.ncw.webapps.rr.com:8083/users/v1
+    greeting-service:
+      path: /greeting/v1/**
+      url: http://directsales-ub-local.webapps.rr.com:8084/greeting/v1
+  
+
+logging:
+  level:
+    org:
+      springframework:
+        security: INFO
