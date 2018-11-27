@@ -87,9 +87,12 @@
 	<modules>
        <!-- <module>api-admin</module>
         <module>api-config</module>
-        <module>api-eureka</module>
         <module>api-gateway</module> -->
 		<module>api-authorization</module>
+        <module>api-registry</module>
+        <module>oauth2-client</module>
+        <module>api-zuul-resource</module>
+        <module>api-user</module>
     </modules>
 
 </project>

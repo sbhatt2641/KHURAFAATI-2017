@@ -8,7 +8,7 @@ server:
   port: 8082
   contextPath: /ecomm
   ssl:
-    enabled: false
+    enabled: true
     keyAlias: ubwebapi
     keyPassword: Charter817
     keyStore: C:/certs/ssl-cert.jks 
@@ -18,7 +18,7 @@ server:
 eureka:
   instance:
 #    preferIpAddress: true #Complains on peer node.
-    hostname: localhost
+    hostname: directsales-ub-local.ncw.webapps.rr.com
   dashboard:
     path: /apiregistry
   client:

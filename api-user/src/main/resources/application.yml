@@ -6,7 +6,7 @@ server:
   port: 8083
   #contextPath: /users
   ssl:
-    enabled: true
+    enabled: false
     keyAlias: ubwebapi
     keyPassword: Charter817
     keyStore: C:/certs/ssl-cert.jks 
@@ -23,6 +23,16 @@ security:
         # Note: The authorization server needs to be running...
         #keyValue: "123"
         keyUri: "https://directsales-ub-local.ncw.webapps.rr.com:8081/oauth/token_key"
+
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 5
+  client:
+    enabled: true
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:https://directsales-ub-local.ncw.webapps.rr.com:8082/ecomm/eureka}
 
 logging:
   level:

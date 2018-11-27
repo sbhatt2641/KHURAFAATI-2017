@@ -21,7 +21,7 @@ eureka:
     registerWithEureka: true
     fetchRegistry: true
     serviceUrl:
-      defaultZone: ${EUREKA_URI:http://localhost:8082/ecomm/eureka}
+      defaultZone: ${EUREKA_URI:https://directsales-ub-local.ncw.webapps.rr.com:8082/ecomm/eureka}
               
 security:
   basic:
@@ -43,17 +43,21 @@ zuul:
       prefix: Bearer
     
   add-proxy-headers: true
-  ignoredServices: '*'
-  routes:
-    user-service:
-      #exclude Cookie, Set-Cookie, Authorization from sensitive headers
-      sensitiveHeaders: 
-      path: /users/v1/**
-      url: https://directsales-ub-local.ncw.webapps.rr.com:8083/users/v1
-    greeting-service:
-      path: /greeting/v1/**
-      url: http://directsales-ub-local.webapps.rr.com:8084/greeting/v1
-  
+#  ignoredServices: '*'
+  sensitiveHeaders: 
+#  routes:
+#    user-service:
+#      #exclude Cookie, Set-Cookie, Authorization from sensitive headers
+#      sensitiveHeaders: 
+#      path: /users/v1/**
+#      url: https://directsales-ub-local.ncw.webapps.rr.com:8083/users/v1
+#    greeting-service:
+#      path: /greeting/v1/**
+#      url: http://directsales-ub-local.webapps.rr.com:8084/greeting/v1
+
+ribbon:
+  eureka:
+    enabled: true  
 
 logging:
   level:
